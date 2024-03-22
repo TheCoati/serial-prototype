@@ -21,7 +21,7 @@ out/
 .settings
 .springBeans
 .sts4-cache
-bin/
+arduino/
 !**/src/main/**/bin/
 !**/src/test/**/bin/
 
