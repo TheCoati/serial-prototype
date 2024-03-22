@@ -4,6 +4,7 @@ import com.fazecast.jSerialComm.SerialPortEvent;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 public class SerialConnection implements Closeable {
@@ -24,20 +25,19 @@ public class SerialConnection implements Closeable {
 
             @Override
             public void serialEvent(SerialPortEvent serialPortEvent) {
-                System.out.println(serialPortEvent.getReceivedData());
+
+                for (byte b : serialPortEvent.getReceivedData()) {
+                    System.out.print(b);
+                }
             }
         });
     }
 
-    public void sendMessage(String message) throws IOException {
-        byte[] bytes = message.getBytes(StandardCharsets.UTF_8);
-
-        this.port.writeBytes(bytes, bytes.length);
-
-//        try(OutputStream outputStream = this.port.getOutputStream()) {
-//            outputStream.write(bytes);
-//            outputStream.flush();
-//        }
+    public void sendMessage(byte[] bytes) throws IOException {
+        try(OutputStream outputStream = this.port.getOutputStream()) {
+            outputStream.write(bytes);
+            outputStream.flush();
+        }
     }
 
     @Override
